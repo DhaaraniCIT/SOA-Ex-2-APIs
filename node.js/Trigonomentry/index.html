@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trigonometry</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.gcd').click(function(){
+                var set1 = document.getElementById('val1').value;
+                var set2 = document.getElementById('val2').value;
+                var set3 = document.getElementById('val3').value;
+                var req = new XMLHttpRequest();
+                req.open('POST', '/trigonomentry');
+                req.setRequestHeader('Content-Type', 'application/json');
+                req.send(JSON.stringify({ set1 : set1 , set2 : set2 , set3 : set3}));
+                req.addEventListener('load', () => {
+                    console.log(req.responseText);
+                    var result = JSON.parse(req.responseText);
+                    document.getElementById("result").innerHTML ="Sin : " + result.sin.toFixed(3) + "<br>Cos : " + result.cos.toFixed(3) + "<br>Tan : " + result.tan.toFixed(3) + "<br>Sec : " + result.sec.toFixed(3) + "<br>Cosec : " + result.cosec.toFixed(3) + "<br>Cot : " + result.cot.toFixed(3) + "<br>Arcsin : " + result.arcsin.toFixed(3) + "<br>Arccos : " + result.arccos.toFixed(3) + "<br>Arctan : " + result.arctan.toFixed(3);
+                });
+                
+                req.addEventListener('error', () => {
+                    console.log('Shit, something bad happened.');
+                    console.log(e);
+                });
+
+            })
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Trigonometry</h1>
+        <span>*Enter the value in cm</span>
+        <form>
+            <div class="row mb-3 deviation">
+                <div class="col">
+                  <label for="">Hypotenuse</label>
+                  <input type="number" class="form-control" id="val1" required name="set1" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" pattern=" /^[1-9][0-9]+$/">
+                </div>
+                <div class="col">
+                    <label for="">Adjacent Side</label>
+                    <input type="number" class="form-control" id="val2" required name="set2" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" pattern=" /^[1-9][0-9]+$/">
+                </div>
+                <div class="col">
+                    <label for=""> Opposite Side</label>
+                    <input type="number" class="form-control" id="val3" required name="set2" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" pattern=" /^[1-9][0-9]+$/">
+                </div>
+                <div class="col mt-4 pt-2">
+                  <button type="button" class="btn btn-primary btn-block gcd" name="gcd">Calculate</button>
+                </div>
+              </div>
+        </form>
+        <h1>Result</h1>
+        <p id="result">
+
+        </p>
+    </div> 
+</body>
+</html>

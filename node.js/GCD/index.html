@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCD</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".deviation").show();
+            $(".linear").hide();
+            $(".linear1").hide();
+            $(".linear2").hide();
+            $("#sel2").change(function(){
+                var selectedCountry = $(this).children("option:selected").val();
+                if(selectedCountry == 1){
+                    $(".linear").hide();
+                    $(".deviation").show();
+                    $(".linear1").hide();
+                    $(".linear2").hide();
+                }
+                else if(selectedCountry == 2){
+                    $(".linear").show();
+                    $(".deviation").hide();
+                    $(".linear1").hide();
+                    $(".linear2").hide();
+                }
+                else if(selectedCountry == 3){
+                    $(".linear").hide();
+                    $(".deviation").hide();
+                    $(".linear1").show();
+                    $(".linear2").hide();
+                }
+                else{
+                    $(".linear").hide();
+                    $(".deviation").hide();
+                    $(".linear1").hide();
+                    $(".linear2").show();
+                }
+            });
+            $('.gcd').click(function(){
+                var set1 = document.getElementById('val1').value;
+                var set2 = document.getElementById('val2').value;
+                var req = new XMLHttpRequest();
+                req.open('POST', '/gcd');
+                req.setRequestHeader('Content-Type', 'application/json');
+                req.send(JSON.stringify({ set1 : set1 , set2 : set2}));
+                req.addEventListener('load', () => {
+                    console.log(req.responseText);
+                    var result = JSON.parse(req.responseText);
+                    document.getElementById("result").innerHTML = "GCD : " + result.GCD + "<br>LCM : " + result.LCM;
+                });
+                
+                req.addEventListener('error', () => {
+                    console.log('Shit, something bad happened.');
+                    console.log(e);
+                });
+
+            })
+            $('.root2').click(function(){
+                var set1 = document.getElementById('sd').value;
+                //var set2 = document.getElementById('val2').value;
+                var req = new XMLHttpRequest();
+                req.open('POST', '/rootn');
+                req.setRequestHeader('Content-Type', 'application/json');
+                req.send(JSON.stringify({ set1 : set1 , set2 : 2 }));
+                req.addEventListener('load', () => {
+                    console.log(req.responseText);
+                    document.getElementById("result").innerHTML = "Squre root of " + set1 + " : " + req.responseText;
+                });
+                
+                req.addEventListener('error', () => {
+                    console.log('Shit, something bad happened.');
+                    console.log(e);
+                });
+                
+            })
+            $('.root3').click(function(){
+                var set1 = document.getElementById('val3').value;
+                //var set2 = document.getElementById('val2').value;
+                var req = new XMLHttpRequest();
+                req.open('POST', '/rootn');
+                req.setRequestHeader('Content-Type', 'application/json');
+                req.send(JSON.stringify({ set1 : set1 , set2 : 3}));
+                req.addEventListener('load', () => {
+                    console.log(req.responseText);
+                    document.getElementById("result").innerHTML = "Cube root of " + set1 + " : " + req.responseText;
+                });
+                
+                req.addEventListener('error', () => {
+                    console.log('Shit, something bad happened.');
+                    console.log(e);
+                });
+                
+            })
+            $('.rootn').click(function(){
+                var set1 = document.getElementById('val4').value;
+                var set2 = document.getElementById('val5').value;
+                var req = new XMLHttpRequest();
+                req.open('POST', '/rootn');
+                req.setRequestHeader('Content-Type', 'application/json');
+                req.send(JSON.stringify({ set1 : set1 , set2 : set2}));
+                req.addEventListener('load', () => {
+                    console.log(req.responseText);
+                    document.getElementById("result").innerHTML = set2 + "th root of " + set1 + " : " + req.responseText;
+                });
+                
+                req.addEventListener('error', () => {
+                    console.log('Shit, something bad happened.');
+                    console.log(e);
+                });
+            })
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        
+          <h1 class="text-center">GCD,LCM,Roots</h1>
+          <select class="form-control mb-3" id="sel2" name="sel2">
+            <option value="1">GCD & LCM</option>
+            <option value="2">Square Root</option>
+            <option value="3">Cube Root</option>
+            <option value="4">Nth Root</option>
+          </select>
+          <h3 class="mb-3 deviation">GCD & LCM</h3>
+          <h3 class="mb-3 linear">Squre Root</h3>
+          <h3 class="mb-3 linear1">Cube Root</h3>
+          <h3 class="mb-3 linear2">Nth Root</h3>
+          <form>
+            <div class="row mb-3 linear ">
+              <div class="col">
+                <label for="">Number</label>
+                <input type="textarea" class="form-control" id="sd" required name="set" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" pattern="/^[0-9]+$/">
+              </div>
+              <div class="col mt-4 pt-2">
+                <button type="button" class="btn btn-primary btn-block root2" name="root2">Calculate</button>
+              </div>
+            </div>
+            </form>
+            <form>
+            <div class="row mb-3 deviation">
+                
+                <div class="col">
+                  <label for="">Number1</label>
+                  <input type="textarea" class="form-control" id="val1" required name="set1" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" pattern="/^[0-9]+$/">
+                </div>
+                <div class="col">
+                    <label for="">Number2</label>
+                    <input type="textarea" class="form-control" id="val2" required name="set2" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" pattern="/^[0-9]+$/">
+                  </div>
+                <div class="col mt-4 pt-2">
+                  <button type="button" class="btn btn-primary btn-block gcd" name="gcd">Calculate</button>
+                </div>
+              </div>
+        </form>
+        <form>
+            <div class="row mb-3 linear1">
+                
+                <div class="col">
+                  <label for="">Number</label>
+                  <input type="textarea" class="form-control" id="val3" required name="set3" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" pattern="/^[0-9]+$/">
+                </div>
+                <div class="col mt-4 pt-2">
+                  <button type="button" class="btn btn-primary btn-block root3" name="root3">Calculate</button>
+                </div>
+              </div>
+        </form>
+        <form>
+            <div class="row mb-3 linear2">
+                
+                <div class="col">
+                  <label for="">Number</label>
+                  <input type="textarea" class="form-control" id="val4" required name="set4" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" pattern="/^[0-9]+$/">
+                </div>
+                <div class="col">
+                    <label for="">Nth root</label>
+                    <input type="textarea" class="form-control" id="val5" required name="set5" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" pattern=" /^[0-9]+$/">
+                  </div>
+                <div class="col mt-4 pt-2">
+                  <button type="button" class="btn btn-primary btn-block rootn" name="nroot">Calculate</button>
+                </div>
+              </div>
+        </form>
+        <h1>Result</h1>
+        <p id="result">
+
+        </p>
+    </div> 
+</body>
+</html>
