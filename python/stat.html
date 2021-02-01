@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".linear").hide();
+            $(".deviation").show();
+            $("#sel2").change(function(){
+                var selectedCountry = $(this).children("option:selected").val();
+                if(selectedCountry == 2){
+                    $(".linear").show();
+                    $(".deviation").hide();
+                }
+                else{
+                    $(".linear").hide();
+                    $(".deviation").show();
+                }
+            });
+            $(".sdb").click(function(){
+                var set1 = $('#sd').val();
+                set1 = set1.toString();
+            //var set2 = document.getElementById('set2').value;
+            console.log("sd",set1);
+            var formData={ number:set1 };
+            console.log('in ajax',formData);
+	 			$.ajax({
+                type: "GET",
+                url: "http://localhost:5000/variation?set1="+set1,
+                dataType:"json",
+                contentType: 'application/json',
+                processData:true,
+               
+                success:function(response){
+                	console.log('successs');
+                	var result=response;
+                	$('#result').html("Standard Deviation : "+ result.SD + "<br>Variation : " + result.variation);
+        	        console.log(result);
+                 },
+                error:function(result) {
+                       console.log(result);
+                 }
+                
+              });
+            })
+            $(".lrb").click(function(){
+                
+            })
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <form>
+          <h1 class="text-center">Statistics Calculator</h1>
+          <select class="form-control mb-3" id="sel2" name="sellist2">
+            <option value="1">Standard Deviation & Variance</option>
+            <option value="2">Linear Regression</option>
+          </select>
+          <h3 class="mb-3 deviation">Standard Deviation & Variance</h3>
+          <h3 class="mb-3 linear">Linear Regression</h3>
+            <div class="row mb-3 deviation">
+              <div class="col">
+                <label for="">Set1</label>
+                <input type="textarea" class="form-control" id="sd" required name="sd" >
+              </div>
+              <div class="col mt-4 pt-2">
+                <button type="button" class="btn btn-primary btn-block sdb">Calculate</button>
+              </div>
+            </div>
+            <div class="row mb-3 linear">
+                
+                <div class="col">
+                  <label for="">Set1</label>
+                  <input type="textarea" class="form-control" id="val1" required name="set1" >
+                </div>
+                <div class="col">
+                    <label for="">Set2</label>
+                    <input type="textarea" class="form-control" id="val2" required name="set2" >
+                  </div>
+                <div class="col mt-4 pt-2">
+                  <button type="button" class="btn btn-primary btn-block lrb">Calculate</button>
+                </div>
+              </div>
+            <h1>Result</h1>
+            <p id="result" class="mt-2" style="font-size: 20px;">
+
+            </p>
+        </form>
+    </div> 
+</body>
+</html>

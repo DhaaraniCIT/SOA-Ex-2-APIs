@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trigonometry</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.gcd').click(function(){
+                var set1 = document.getElementById('val1').value;
+                var set2 = document.getElementById('val2').value;
+                var set3 = document.getElementById('val3').value;
+                $.ajax({
+                type: "GET",
+                url: 'http://localhost:5000/trigonometry?set1='+set1+'&set2='+set2+'&set3='+set3,
+                dataType:"json",
+                contentType: 'application/json',
+                processData:true,
+               
+                success:function(response){
+                	console.log('successs');
+                	var result=response;
+                	$('#result').html("Standard Deviation : "+ result.SD + "<br>Variation : " + result.variation);
+        	        console.log(result);
+                 },
+                error:function(result) {
+                       console.log(result);
+                 }
+                
+              });
+
+            })
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Trigonometry</h1>
+        <span>*Enter the value in cm</span>
+        <form>
+            <div class="row mb-3 deviation">
+                <div class="col">
+                  <label for="">Hypotenuse</label>
+                  <input type="number" class="form-control" id="val1" required name="set1" >
+                </div>
+                <div class="col">
+                    <label for="">Adjacent Side</label>
+                    <input type="number" class="form-control" id="val2" required name="set2" >
+                </div>
+                <div class="col">
+                    <label for=""> Opposite Side</label>
+                    <input type="number" class="form-control" id="val3" required name="set2" >
+                </div>
+                <div class="col mt-4 pt-2">
+                  <button type="button" class="btn btn-primary btn-block gcd" name="gcd">Calculate</button>
+                </div>
+              </div>
+        </form>
+        <h1>Result</h1>
+        <p id="result">
+
+        </p>
+    </div> 
+</body>
+</html>
